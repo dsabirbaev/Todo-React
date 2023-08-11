@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import postAPI from "../../service/posts";
 
+import { v4 as uuidv4 } from "uuid";
+
 const index = () => {
 
     const [post, setPost] = useState([]);
@@ -10,15 +12,42 @@ const index = () => {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    useEffect(() => {
-        postAPI.getPost().then((response) => {
+
+    const addPost = () => {
+        const newPost = {
+            title : title,
+            description: description,
+            id: uuidv4()
+        };
+
+        if(newPost.title.trim().length === 0 || newPost.description.trim().length === 0){
+            alert("Please fill the field!");
+        }else{
+            postAPI.createPost(newPost);
+            setTitle("");
+            setDescription("");
+            
+        }
+  
+    }
+
+    function getPosts() {
+        postAPI
+          .getPost()
+          .then((response) => {
             if (response.status === 200) {
-                setPost(response.data);
+              setPost(response.data);
             }
-        }).catch((err) => {
-            console.log(err.message);
-        })
-    }, [])
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+    }
+    
+
+    useEffect(() => {
+        getPosts()
+    }, [addPost])
 
 
 
