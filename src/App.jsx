@@ -5,8 +5,10 @@ import Posts from "./pages/Posts";
 import Comments from "./pages/Comments";
 import Home from "./pages/Home";
 import Error from "./pages/Error";
+import PostItem from "./pages/Posts/PostItem";
 
 import { BrowserRouter, Route, Routes} from "react-router-dom";
+
 
 const App = () => {
   return (
@@ -24,6 +26,7 @@ const App = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="/users" element={<Users />} />
                   <Route path="/posts" element={<Posts />} />
+                  <Route path="/posts/:id" element={<PostItem />} />
                   <Route path="/comments" element={<Comments />} />
                   <Route path="*" element={<Error />} />
               </Routes>

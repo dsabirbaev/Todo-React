@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import postAPI from "../../service/posts";
 
 import { v4 as uuidv4 } from "uuid";
+import {Link} from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const index = () => {
 
@@ -21,8 +23,9 @@ const index = () => {
         };
 
         if(newPost.title.trim().length === 0 || newPost.description.trim().length === 0){
-            alert("Please fill the field!");
+            toast.info("Please fill all the fields", {autoClose: 1000});
         }else{
+            toast.success(`Post created successfully`, {autoClose: 1000});
             postAPI.createPost(newPost);
             setTitle("");
             setDescription("");
@@ -53,6 +56,8 @@ const index = () => {
 
     return (
         <div className="border border-dashed border-cyan-600 p-5 bg-slate-100">
+            
+             <ToastContainer/>
 
             <button onClick={() => setToggleEditor(!toggleEditor)} className="bg-teal-600 px-3 py-2 rounded-lg focus:ring-4 w-32 text-center text-white font-semibold mb-4">
                 {toggleEditor ? "Close editor" : "Open editor"}
@@ -81,13 +86,13 @@ const index = () => {
                 {
                     post.length && post.map((post) => {
                         return (
-                            <li className="my-2">
-                                <div className="p-4 bg-green-100 border">
+                            <li key={post.id} className="my-2">
+                                <Link to={`/posts/${post.id}`} className="p-4 block bg-green-100 border">
                                     <strong className="block">{post.title}</strong>
                                     <p>
                                         {post.description}
                                     </p>
-                                </div>
+                                </Link>
                             </li>
                         )
                     })
